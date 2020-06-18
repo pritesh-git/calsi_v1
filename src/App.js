@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -12,32 +12,60 @@ function App() {
     fvalue(ivalue+n);
   }
   const optPress=(opt)=>{
-    console.log(ivalue,",",optval,",",firstval);
-    if(optval!==''){
-     var res = rsltPress(); 
-    newopt(opt);
-    newval(res);
-    fvalue(res);
-    } 
-    else{
-      newopt(opt);
+    
+    if(optval!=='') 
+        rsltPress(0); 
+    else
       newval(ivalue);
-      fvalue('');
-    }
+      
+      
+    fvalue('');      
+    newopt(opt);
+
   }
- const rsltPress=()=>{
-    // console.log(ivalue,",",optval,",",firstval);
-    switch(optval){
-      case '+': return parseInt(firstval) + parseInt(ivalue);
-      case '-': return parseInt(firstval) - parseInt(ivalue);
-      case '/': return parseInt(firstval) / parseInt(ivalue);
-      case '*': return parseInt(firstval) + parseInt(ivalue);
+ const rsltPress=(n)=>{
+  switch(optval){
+      case '+':{
+          const res = parseInt(firstval) + parseInt(ivalue);
+          newval(res);
+          console.log("result",firstval);
+          break;
+      } 
+      case '-':{
+          const res = parseInt(firstval) - parseInt(ivalue);
+          newval(res);
+          console.log("result",firstval);
+          break;
+      } 
+      case '/':{
+          const res = parseInt(firstval) / parseInt(ivalue);
+          newval(res);
+          console.log("result",firstval);
+          break;
+      } 
+      case '*':{
+          const res = parseInt(firstval) * parseInt(ivalue);
+          newval(res);
+          console.log("result",firstval);
+          break;
+      } 
       default:  break;
     }    
+    if(n){ newopt(''); fvalue(''); }
   }
+  useEffect(() => {
+    console.log("firstval = ",firstval);
+    console.log("ival = ",ivalue);
+    console.log("optval = ",optval);
+
+  });
+
+
   return (
+
     <div className="d-flex justify-content-center align-items-center bg-success" style={{height:"98vh"}}>
       <div className="h-50 col-md-3 shadow-lg p-3 rounded px-md-4 bg-primary">
+       <h3  className="float-right">{firstval} {optval} {ivalue}</h3>
        <input type="text" name="vals" value={ivalue} className="w-100 p-3 shadow p-3 mb-3 bg-white rounded" onKeyPress={()=>{"if(isNaN(String.fromCharCode(event.keyCode))) return false;"}} readOnly/>
        <div className="btn-group-vertical w-100 p-3 h-75 d-inline-block">
        <div className="btn-group h-25">
@@ -61,7 +89,7 @@ function App() {
         <div className="btn-group h-25">
           <button type="button" className="btn btn-info m-1 shadow rounded" onClick={()=>{numPress('.')}}><h1>.</h1></button>
           <button type="button" className="btn btn-info m-1 shadow rounded" onClick={()=>{numPress('0')}}>0</button>
-          <button type="button" className="btn btn-info m-1 shadow rounded" onClick={()=>{rsltPress()}}>=</button>
+          <button type="button" className="btn btn-info m-1 shadow rounded" onClick={()=>{rsltPress(1)}}>=</button>
           <button type="button" className="btn btn-info m-1 shadow rounded" onClick={()=>{optPress('+')}}>+</button>
         </div>
       </div>
